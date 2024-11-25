@@ -15,7 +15,8 @@ variables:
     value: 'AzServicePrincipal'
   - name: AzureFunctionName
     value: 'example-az-func'
-
+  - name: PackagePath
+    value: '$(Agent.BuildDirectory)/drop/$(Build.BuildNumber).zip'
 stages:
   - stage: build
     displayName: Build
@@ -36,3 +37,4 @@ stages:
           EnvironmentName: Test
           AzureSubscription: '${{ variables.AzureServiceConnection }}'
           AzureFunctionName: '${{ variables.AzureFunctionName }}'
+          PackagePath: ${{ variables.PackagePath }}
