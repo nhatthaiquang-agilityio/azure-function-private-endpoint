@@ -1,0 +1,43 @@
+name: $(Build.DefinitionName)_$(Date:yyyyMMdd)$(Rev:.r)
+trigger: none
+pr: none
+
+pool:
+  # Agent VM image name
+  vmImage: 'vm-azagent-depl'
+
+resources:
+  repositories:
+    - repository: CICD
+      type: github
+      ref: main
+      name: nhatthaiquang-agilityio/Terraform-CI-CD
+      endpoint: nhatthaiquang-agilityio
+
+variables:
+  - name: AzureServiceConnection
+    value: 'AzServicePrincipal'
+  - name: AzureFunctionName
+    value: 'example-az-func'
+  # - name: PrivateAzAgentVM
+  #   # Agent VM image name
+  #   value: 'vm-azagent-depl'
+
+stages:
+  - stage: build
+    displayName: Build
+    jobs:
+      - template: jobs/build-dotnet.yml@CICD
+        parameters:
+          BuildTargetPath: '**/ExampleAzureFunctions.csproj'
+          DotNetVersion: '8.x'
+
+  - stage: deploy
+    displayName: Deploy Test
+    dependsOn: build
+    jobs:
+      - template: jobs/deploy-azure-function.yml@CICD
+        parameters:
+          EnvironmentName: Test
+          AzureSubscription: '${{ variables.AzureServiceConnection }}'
+          AzureFunctionName: '${{ variables.AzureFunctionName }}'
