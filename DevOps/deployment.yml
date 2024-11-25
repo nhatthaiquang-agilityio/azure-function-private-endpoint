@@ -17,24 +17,50 @@ variables:
     value: 'example-az-func'
   - name: PackagePath
     value: '$(Agent.BuildDirectory)/drop/$(Build.BuildNumber).zip'
-stages:
-  - stage: build
-    displayName: Build
-    pool: azagent-deployment
-    jobs:
-      - template: jobs/build-dotnet.yml@CICD
-        parameters:
-          BuildTargetPath: '**/ExampleAzureFunctions.csproj'
-          DotNetVersion: '8.x'
+  - name: TerraformInfraWorkingDirectory
+    value: '$(System.DefaultWorkingDirectory)/DevOps/Terraform/Infrastructures'
+  - name: TerraformStateStorageAccount
+    value: 'tfstateazfunc'
+  - name: TerraformStateStorageAzureResourceGroup
+    value: 'RG-ExampleAzureFunctions'
+  - name: TerraformStateStorageContainer
+    value: 'tfstatecontainerazfunc'
+  - name: TerraformStateStorageInfrastructureFilename
+    value: 'infrastructure.tfstate'
 
-  - stage: deploy
-    displayName: Deploy Test
-    dependsOn: build
+stages:
+  - stage: SetupInfrastructure
+    displayName: Setup Infra Tes Environment
     pool: azagent-deployment
     jobs:
-      - template: jobs/deploy-azure-function.yml@CICD
-        parameters:
-          EnvironmentName: Test
-          AzureSubscription: '${{ variables.AzureServiceConnection }}'
-          AzureFunctionName: '${{ variables.AzureFunctionName }}'
-          PackagePath: ${{ variables.PackagePath }}
+    - template: jobs/setup-azure-infrastructure.yml@CICD
+      parameters:
+        EnvironmentName: 'Test'
+        TerraformWorkingDirectory: ${{ variables.TerraformInfraWorkingDirectory }}
+        AzureServiceConnectionName: ${{ variables.AzureServiceConnection }}
+        StorageAccountsName:  $(TerraformStateStorageAccount)
+        AzureResourceGroupName: $(TerraformStateStorageAzureResourceGroup)
+        AzureContainerName: $(TerraformStateStorageContainer)
+        AzureRmKeyTFState: $(TerraformStateStorageInfrastructureFilename)
+
+
+  # - stage: build
+  #   displayName: Build
+  #   pool: azagent-deployment
+  #   jobs:
+  #     - template: jobs/build-dotnet.yml@CICD
+  #       parameters:
+  #         BuildTargetPath: '**/ExampleAzureFunctions.csproj'
+  #         DotNetVersion: '8.x'
+
+  # - stage: deploy
+  #   displayName: Deploy Test
+  #   dependsOn: build
+  #   pool: azagent-deployment
+  #   jobs:
+  #     - template: jobs/deploy-azure-function.yml@CICD
+  #       parameters:
+  #         EnvironmentName: Test
+  #         AzureSubscription: '${{ variables.AzureServiceConnection }}'
+  #         AzureFunctionName: '${{ variables.AzureFunctionName }}'
+  #         PackagePath: ${{ variables.PackagePath }}
