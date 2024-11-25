@@ -4,7 +4,7 @@ pr: none
 
 pool:
   # Agent VM image name
-  vmImage: 'vm-azagent-depl'
+  vmImage: 'azagent-deployment'
 
 resources:
   repositories:
