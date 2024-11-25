@@ -2,10 +2,6 @@ name: $(Build.DefinitionName)_$(Date:yyyyMMdd)$(Rev:.r)
 trigger: none
 pr: none
 
-pool:
-  # Agent VM image name
-  vmImage: 'azagent-deployment'
-
 resources:
   repositories:
     - repository: CICD
@@ -19,13 +15,11 @@ variables:
     value: 'AzServicePrincipal'
   - name: AzureFunctionName
     value: 'example-az-func'
-  # - name: PrivateAzAgentVM
-  #   # Agent VM image name
-  #   value: 'vm-azagent-depl'
 
 stages:
   - stage: build
     displayName: Build
+    pool: azagent-deployment
     jobs:
       - template: jobs/build-dotnet.yml@CICD
         parameters:
@@ -35,6 +29,7 @@ stages:
   - stage: deploy
     displayName: Deploy Test
     dependsOn: build
+    pool: azagent-deployment
     jobs:
       - template: jobs/deploy-azure-function.yml@CICD
         parameters:
