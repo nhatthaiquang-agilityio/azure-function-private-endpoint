@@ -1,4 +1,4 @@
-name: $(Build.DefinitionName)_$(Date:yyyyMMdd)$(Rev:.r)
+name: $(Build.DefinitionName)_$(Date:yyyy).$(Date:%M).$(Date:%d)$(Rev:.r)
 trigger: none
 pr: none
 
