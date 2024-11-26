@@ -35,3 +35,8 @@ variable "az_function_pv_svc_connection" {
   type = string
   default = ""
 }
+
+variable "az_function_private_dns_zone_group" {
+  type = string
+  default = ""
+}
