@@ -79,3 +79,18 @@ resource "azurerm_private_endpoint" "pv_endpoint_example_az_func" {
     private_dns_zone_ids = [azurerm_private_dns_zone.pdnszone_az_func.id]
   }
 }
+
+resource "azurerm_private_dns_zone_virtual_network_link" "dns_vnet_lnk_az_func" {
+  name                  = "lnk-dns-vnet-az-func"
+  resource_group_name   = data.azurerm_resource_group.rg.name
+  private_dns_zone_name = azurerm_private_dns_zone.pdnszone_az_func.name
+  virtual_network_id    = azurerm_virtual_network.az_func_network.id
+}
+
+resource "azurerm_private_dns_a_record" "dns_a_sta" {
+  name                = "a-record-az-func"
+  zone_name           = azurerm_private_dns_zone.pdnszone_az_func.name
+  resource_group_name = data.azurerm_resource_group.rg.name
+  ttl                 = 300
+  records             = [azurerm_private_endpoint.pv_endpoint_example_az_func.private_service_connection.0.private_ip_address]
+}
