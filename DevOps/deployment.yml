@@ -21,7 +21,7 @@ variables:
 stages:
   - stage: build
     displayName: Build
-    pool: agent-deployment-name
+    pool: agent-deployment
     jobs:
       - template: jobs/build-dotnet.yml@CICD
         parameters:
@@ -31,7 +31,7 @@ stages:
   - stage: deploy
     displayName: Deploy Test
     dependsOn: build
-    pool: agent-deployment-name
+    pool: agent-deployment
     jobs:
       - template: jobs/deploy-azure-function.yml@CICD
         parameters:
