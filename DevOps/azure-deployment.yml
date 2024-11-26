@@ -15,7 +15,7 @@ resources:
 
 variables:
   - name: AzureServiceConnection
-    value: 'AzServicePrincipal'
+    value: 'AzureServiceConnection'
   - name: AzureFunctionName
     value: 'example-az-func'
   - name: PackagePath
