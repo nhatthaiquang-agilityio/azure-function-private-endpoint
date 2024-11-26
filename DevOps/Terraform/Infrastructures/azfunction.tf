@@ -50,6 +50,12 @@ resource "azurerm_windows_function_app" "example_az_func" {
 }
 
 
+# Create private DNS zones based on the service domains.
+resource "azurerm_private_dns_zone" "pdnszone_az_func" {
+  name                = "privatelink.azurewebsites.net"
+  resource_group_name = data.azurerm_resource_group.rg.name
+}
+
 # Private Endpoint for Azure Function
 resource "azurerm_private_endpoint" "pv_endpoint_example_az_func" {
   name                = var.pv_endpoint_name
@@ -66,5 +72,10 @@ resource "azurerm_private_endpoint" "pv_endpoint_example_az_func" {
     private_connection_resource_id = azurerm_windows_function_app.example_az_func.id
     subresource_names              = ["sites"]
     is_manual_connection           = false
+  }
+
+  private_dns_zone_group {
+    name                 = "dns-az-func"
+    private_dns_zone_ids = [azurerm_private_dns_zone.pdnszone_az_func.id]
   }
 }
