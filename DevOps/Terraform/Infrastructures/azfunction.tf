@@ -34,7 +34,13 @@ resource "azurerm_windows_function_app" "example_az_func" {
   storage_account_access_key = azurerm_storage_account.example.primary_access_key
   service_plan_id      = azurerm_service_plan.example.id
 
+  # Virtual network configuration
+  virtual_network_subnet_id = azurerm_subnet.az_func_subnet.id
+
+  public_network_access_enabled = false
+
   app_settings = {
+    "WEBSITE_RUN_FROM_PACKAGE" = 1
     "FUNCTIONS_WORKER_RUNTIME" = "dotnet-isolated",
     "APPINSIGHTS_INSTRUMENTATIONKEY" = azurerm_application_insights.application_insights.instrumentation_key,
   }
