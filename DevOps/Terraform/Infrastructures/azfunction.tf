@@ -35,7 +35,7 @@ resource "azurerm_windows_function_app" "example_az_func" {
   service_plan_id      = azurerm_service_plan.example.id
 
   # Virtual network configuration
-  virtual_network_subnet_id = azurerm_subnet.az_func_subnet.id
+  virtual_network_subnet_id = azurerm_subnet.az_func_subnet_int.id
 
   public_network_access_enabled = false
 
@@ -55,7 +55,7 @@ resource "azurerm_private_endpoint" "pv_endpoint_example_az_func" {
   name                = var.pv_endpoint_name
   location            = var.location
   resource_group_name = data.azurerm_resource_group.rg.name
-  subnet_id           = azurerm_subnet.az_func_subnet.id
+  subnet_id           = azurerm_subnet.az_func_subnet_pe.id
 
   tags     			  			= merge(var.tags, {
     environment = var.environment
