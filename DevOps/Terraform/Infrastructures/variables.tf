@@ -19,6 +19,7 @@ variable "azurerm_windows_function_app_name" {
   type = string
   default = ""
 }
+
 variable "tags" {
   type = map(string)
   default = {
@@ -31,12 +32,6 @@ variable "pv_endpoint_name" {
   default = ""
 }
 variable "az_function_pv_svc_connection" {
-  type = string
-  default = ""
-}
-
-
-variable "pv_endpoint_virtual_network_id" {
   type = string
   default = ""
 }

@@ -1,7 +1,3 @@
-data "azurerm_resource_group" "rg" {
-  name = var.resource_group_name
-}
-
 # Azure Storage
 resource "azurerm_storage_account" "example" {
   name                     = "${var.az_function_storage_account_name}"
@@ -47,25 +43,13 @@ resource "azurerm_windows_function_app" "example_az_func" {
   }
 }
 
-# Create NET Interface
-resource "azurerm_network_interface" "example" {
-  name                = "pe-nic-exampleazfunc"
-  location            = var.location
-  resource_group_name = data.azurerm_resource_group.rg.name
-
-  ip_configuration {
-    name                          = "internal"
-    subnet_id                     = var.pv_endpoint_virtual_network_id
-    private_ip_address_allocation = "Dynamic"
-  }
-}
 
 # Private Endpoint for Azure Function
 resource "azurerm_private_endpoint" "pv_endpoint_example_az_func" {
   name                = var.pv_endpoint_name
   location            = var.location
   resource_group_name = data.azurerm_resource_group.rg.name
-  subnet_id           = var.pv_endpoint_virtual_network_id
+  subnet_id           = azurerm_subnet.az_func_subnet.id
 
   tags     			  			= merge(var.tags, {
     environment = var.environment
