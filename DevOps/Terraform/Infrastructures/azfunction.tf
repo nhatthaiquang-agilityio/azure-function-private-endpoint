@@ -61,9 +61,6 @@ resource "azurerm_private_endpoint" "pv_endpoint_example_az_func" {
     environment = var.environment
   })
 
-  # Attach network Interface
-  custom_network_interface_name = azurerm_network_interface.az_func_nic.name
-
   private_service_connection {
     name                           = var.az_function_pv_svc_connection
     private_connection_resource_id = azurerm_windows_function_app.example_az_func.id
