@@ -4,7 +4,7 @@ data "azurerm_resource_group" "rg" {
 
 # Azure Storage
 resource "azurerm_storage_account" "example" {
-  name                     = "${var.functionapp_storage_account_name}"
+  name                     = "${var.az_function_storage_account_name}"
   resource_group_name      = data.azurerm_resource_group.rg.name
   location                 = var.location
   account_tier             = "Standard"

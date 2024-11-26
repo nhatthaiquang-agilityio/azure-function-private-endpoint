@@ -10,7 +10,7 @@ variable "location" {
   type = string
 }
 
-variable "functionapp_storage_account_name" {
+variable "az_function_storage_account_name" {
   type = string
   default = ""
 }
