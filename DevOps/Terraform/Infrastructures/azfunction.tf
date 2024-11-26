@@ -25,7 +25,7 @@ resource "azurerm_service_plan" "example" {
   location            = var.location
   os_type             = "Windows"
   # Windows Premium Plan
-  sku_name            = "P1V2"
+  sku_name            = "P1v2"
 }
 
 # Azure Function
