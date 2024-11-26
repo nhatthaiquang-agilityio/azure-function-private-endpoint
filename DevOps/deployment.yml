@@ -12,7 +12,7 @@ resources:
 
 variables:
   - name: AzureServiceConnection
-    value: 'AzServicePrincipal'
+    value: 'AzureServiceConnection'
   - name: AzureFunctionName
     value: 'example-az-func'
   - name: PackagePath
@@ -21,7 +21,7 @@ variables:
 stages:
   - stage: build
     displayName: Build
-    pool: agent-deployment
+    pool: agent-deployment-name
     jobs:
       - template: jobs/build-dotnet.yml@CICD
         parameters:
@@ -31,7 +31,7 @@ stages:
   - stage: deploy
     displayName: Deploy Test
     dependsOn: build
-    pool: agent-deployment
+    pool: agent-deployment-name
     jobs:
       - template: jobs/deploy-azure-function.yml@CICD
         parameters:
