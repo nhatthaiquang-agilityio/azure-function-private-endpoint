@@ -24,8 +24,8 @@ resource "azurerm_service_plan" "example" {
   resource_group_name = data.azurerm_resource_group.rg.name
   location            = var.location
   os_type             = "Windows"
-  # Windows Consumption
-  sku_name            = "Y1"
+  # Windows Premium Plan
+  sku_name            = "P1V2"
 }
 
 # Azure Function

@@ -37,7 +37,7 @@ stages:
     jobs:
     - template: jobs/setup-azure-infrastructure.yml@CICD
       parameters:
-        EnvironmentName: 'Test'
+        EnvironmentName: 'test'
         TerraformWorkingDirectory: ${{ variables.TerraformInfraWorkingDirectory }}
         AzureServiceConnectionName: ${{ variables.AzureServiceConnection }}
         StorageAccountsName:  ${{ variables.TerraformStateStorageAccount }}
